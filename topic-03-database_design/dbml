@@ -11,7 +11,7 @@
 //
 //  2. Кожен учасник команди підписує таблиці, які він створював:
 //
-//     [Ім'я] — назви таблиць через кому
+//     [Микола] — Trainers, Specializations, TrainerSpecializations
 //     [Ім'я] — назви таблиць через кому
 //     [Ім'я] — назви таблиць через кому
 //
@@ -35,4 +35,28 @@
 // ══════════════════════════════════════════════════════════════════
 
 
-// Вставте ваш DBML-код нижче 👇
+// Вставте ваш DBML-код нижче 👇                                             
+ Table Trainers {
+  id               bigint       [primary key, increment]
+  first_name       varchar(50)  [not null]
+  last_name        varchar(50)  [not null]
+  email            varchar(100) [not null, unique]
+  phone            varchar(20)
+  experience_years int          [default: 0]
+  hourly_rate      float
+  hired_at         date
+}
+
+Table Specializations {
+  id    bigint       [primary key, increment]
+  name  varchar(100) [not null, unique]
+}
+
+Table TrainerSpecializations {
+  trainer_id        bigint [not null, ref: > Trainers.id]
+  specialization_id bigint [not null, ref: > Specializations.id]
+
+  indexes {
+    (trainer_id, specialization_id) [pk]
+  }
+} 
