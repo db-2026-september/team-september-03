@@ -8,12 +8,13 @@
 //     інструменті — dbdiagram.io, draw.io, Lucidchart тощо.
 //
 //  2. Додайте зображення вашої фінальної ER-діаграми (можна вставити як посилання на зображення в інтернеті та обов'язково закомітити файл з діаграмою в репозиторій).
-//
+//  
 //  2. Кожен учасник команди підписує таблиці, які він створював:
 //
-//     [Микола] — Trainers, Specializations, TrainerSpecializations
-//     [Ім'я] — назви таблиць через кому
-//     [Ім'я] — назви таблиць через кому
+//     [Микола] — trainers, specializations, trainerSpecializations
+//     [Anastasiia Khudych] — members, memberships, fitness_goals
+//     [Maksym Bielik] — equipment_types, equipment_items, progress
+//     [Vladyslav Kurchyk] - classes, attendance
 //
 //  4. У цьому файлі додайте DBML-код вашої схеми.
 //     Якщо використовуєте dbdiagram.io — там є кнопка експорту в DBML.
@@ -35,28 +36,164 @@
 // ══════════════════════════════════════════════════════════════════
 
 
-// Вставте ваш DBML-код нижче 👇                                             
- Table Trainers {
-  id               bigint       [primary key, increment]
-  first_name       varchar(50)  [not null]
-  last_name        varchar(50)  [not null]
-  email            varchar(100) [not null, unique]
-  phone            varchar(20)
-  experience_years int          [default: 0]
-  hourly_rate      float
-  hired_at         date
+// Вставте ваш DBML-код нижче 👇:
+//Link to our diagram:
+https://dbdiagram.io/d/team-3-6aa12ac6f476a8187a4b2427
+
+ //Anastasiia Khudych
+Table members {
+  id bigint [primary key, increment]
+  name varchar(50) [not null]
+  surname varchar(50) [not null]
+  phone varchar(20) [not null]
+  email varchar(100) [not null, unique]
 }
 
-Table Specializations {
-  id    bigint       [primary key, increment]
-  name  varchar(100) [not null, unique]
+enum membership_type {
+  monthly
+  yearly
+  premium
 }
 
-Table TrainerSpecializations {
-  trainer_id        bigint [not null, ref: > Trainers.id]
-  specialization_id bigint [not null, ref: > Specializations.id]
+Table memberships {
+  id bigint [primary key, increment]
+  member_id bigint [not null]
+  type membership_type [not null]
+  start_date date [default: `now()`]
+  end_date date
+}
+
+Ref: memberships.member_id > members.id
+
+enum goal_type {
+  weight_loss
+  muscle_gain
+  endurance
+  flexibility
+  maintenance
+}
+
+Table fitness_goals {
+  id bigint [primary key, increment]
+  member_id bigint [not null]
+  goal_type goal_type [not null]
+  target_value decimal [not null]
+  target_value_unit varchar(20)
+  start_date date [not null]
+  target_date date [not null]
+  achieved_date date
+}
+
+Ref: fitness_goals.member_id > members.id
+
+//Микола Астаф'єв
+Table trainers {
+  id bigint [primary key, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  email varchar(100) [not null, unique]
+  phone varchar(20)
+  experience_years int [default: 0]
+  hourly_rate decimal
+  hired_at date
+}
+
+Table specializations {
+  id bigint [primary key, increment]
+  name varchar(100) [not null, unique]
+}
+
+Table trainer_specializations {
+  trainer_id bigint [not null]
+  specialization_id bigint [not null]
 
   indexes {
     (trainer_id, specialization_id) [pk]
   }
-} 
+}
+
+Ref: trainer_specializations.trainer_id > trainers.id
+Ref: trainer_specializations.specialization_id > specializations.id
+
+//Maksym Bielik
+enum equipment_status {
+  available
+  in_use
+  under_repair
+  damaged
+  decommissioned
+}
+
+Table equipment_types {
+  id bigint [primary key, increment]
+  name varchar(100) [not null]
+  category varchar(50) [not null]
+  weight_kg float
+}
+
+Table equipment_items {
+  id bigint [primary key, increment]
+  type_id bigint [not null]
+  inventory_number varchar(50) [not null, unique]
+  room varchar(50)
+  status equipment_status [not null, default: 'available']
+  last_service_at date
+  purchased_at date
+}
+
+Ref: equipment_items.type_id > equipment_types.id
+
+Table progress {
+  id bigint [primary key, increment]
+  fitness_goal_id bigint [not null]
+  measurement integer [not null]
+  recorded_at date [not null]
+  notes text
+}
+
+Ref: progress.fitness_goal_id > fitness_goals.id
+
+enum session_status {
+  scheduled
+  completed
+  cancelled
+  no_show
+}
+
+Table personal_training {
+  id bigint [primary key, increment]
+  member_id bigint [not null]
+  trainer_id bigint [not null]
+  scheduled_at timestamp [not null]
+  duration_min int [not null, default: 60]
+  status session_status [not null, default: 'scheduled']
+  is_paid boolean [not null, default: false]
+  notes text
+}
+
+Ref: personal_training.member_id > members.id
+Ref: personal_training.trainer_id > trainers.id
+
+
+// Vladyslav Kurchyk
+Table classes {
+  id bigint [primary key, increment]
+  name varchar(100) [not null]
+  trainer_id bigint [not null]
+  room varchar(50) [not null]
+  scheduled_at timestamp [not null]
+  duration_min int [not null]
+  max_capacity int [not null]
+}
+
+Ref: classes.trainer_id > trainers.id
+
+Table attendance {
+  id bigint [primary key, increment]
+  member_id bigint [not null]
+  class_id bigint [not null]
+  attended_at timestamp [not null]
+}
+
+Ref: attendance.member_id > members.id
+Ref: attendance.class_id > classes.id
