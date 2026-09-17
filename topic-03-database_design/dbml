@@ -13,7 +13,7 @@
 //
 //     [Микола] — trainers, specializations, trainerSpecializations
 //     [Anastasiia Khudych] — members, memberships, fitness_goals
-//     [Maksym Bielik] — equipment_types, equipment_items, progress
+//     [Maksym Bielik] — equipment_types, equipment_items, progress, personal_training
 //     [Vladyslav Kurchyk] - classes, attendance
 //
 //  4. У цьому файлі додайте DBML-код вашої схеми.
