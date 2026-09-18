@@ -10,7 +10,7 @@
 | ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------- | --------------------------- |
 | Anastasiia Khudych | Database Designer | Designed `members`, `memberships`, and `fitness_goals` tables and their relationships.                | ER diagram, database schema |
 | Микола Астаф'єв    | Database Designer | Designed `trainers`, `specializations`, and `trainer_specializations` tables and their relationships. | ER diagram, database schema |
-| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | ER diagram, database schema |
+| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | ER diagram, database schema https://docs.google.com/document/d/1O4j7kMBXQoohZJdakoCuIcTW0ss-yurejr2xkkXEhZo/edit?tab=t.0 |
 | Vladyslav Kurchyk  | Database Designer | Designed `classes` and `attendance` tables and their relationships.                                   | ER diagram, database schema |
 
 ## Контекст теми
