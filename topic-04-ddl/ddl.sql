@@ -26,3 +26,42 @@
 -- ================================================================
 
 -- Add your DDL below this line
+
+-- [Anastasiia Khudych] - members, memberships, fitness_goals
+DROP TABLE IF EXISTS fitness_goals;
+DROP TABLE IF EXISTS memberships;
+DROP TABLE IF EXISTS members;
+
+DROP TYPE IF EXISTS goal_type; 
+DROP TYPE IF EXISTS membership_type;
+
+CREATE TABLE members (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  surname VARCHAR(50) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  email VARCHAR(100) NOT NULL
+);
+
+CREATE TYPE membership_type AS ENUM ('monthly', 'yearly', 'premium');
+
+CREATE TABLE memberships (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  type membership_type NOT NULL,
+  member_id BIGINT NOT NULL REFERENCES members(id),
+  start_date DATE DEFAULT CURRENT_DATE,
+  end_date DATE
+);
+
+CREATE TYPE goal_type AS ENUM ( 'weight_loss', 'muscle_gain', 'endurance', 'flexibility' );
+
+CREATE TABLE fitness_goals ( 
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  member_id BIGINT NOT NULL REFERENCES members(id), 
+  goal_type goal_type NOT NULL, 
+  target_value DECIMAL(10, 2) NOT NULL, 
+  target_value_unit VARCHAR(20), 
+  start_date DATE NOT NULL, 
+  target_date DATE NOT NULL, 
+  achieved_date DATE 
+);
