@@ -62,4 +62,4 @@ CREATE TABLE fitness_goals (
   target_value DECIMAL(10, 2) NOT NULL, 
   target_value_unit VARCHAR(20), 
 
-  -- [Maksym Bielik] — equipment, personal training, and progress tracking
+  -- [Maksym Bielik] — quipment_types, equipment_items, personal_training, and progress
