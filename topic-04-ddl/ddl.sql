@@ -60,6 +60,57 @@ CREATE TABLE fitness_goals (
   member_id BIGINT NOT NULL REFERENCES members(id), 
   goal_type goal_type NOT NULL, 
   target_value DECIMAL(10, 2) NOT NULL, 
-  target_value_unit VARCHAR(20), 
+  target_value_unit VARCHAR(20)
+  );
 
-  -- [Maksym Bielik] — quipment_types, equipment_items, personal_training, and progress
+
+-- [Maksym Bielik] — quipment_types, equipment_items, personal_training, and progress
+
+CREATE TYPE session_status AS ENUM ('scheduled', 'completed', 'cancelled', 'no_show');
+CREATE TYPE equipment_status AS ENUM ('operational', 'under_maintenance', 'out_of_service');
+
+--  Personal Training
+CREATE TABLE personal_training (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  member_id BIGINT NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+  trainer_id BIGINT NOT NULL REFERENCES trainers(id) ON DELETE RESTRICT,
+  scheduled_at TIMESTAMP NOT NULL,
+  duration_min INT NOT NULL,
+  status session_status NOT NULL,
+  is_paid BOOLEAN NOT NULL DEFAULT FALSE,
+  notes TEXT
+);
+
+--  Progress Tracking
+CREATE TABLE progress (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  fitness_goal_id BIGINT NOT NULL REFERENCES fitness_goals(id) ON DELETE CASCADE,
+  measurement INT NOT NULL,
+  recorded_at DATE NOT NULL DEFAULT CURRENT_DATE,
+  notes TEXT
+);
+
+--  Equipment Types
+CREATE TABLE equipment_types (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  weight_kg REAL
+);
+
+-- Equipment Items
+CREATE TABLE equipment_items (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  type_id BIGINT NOT NULL REFERENCES equipment_types(id) ON DELETE RESTRICT,
+  inventory_number VARCHAR(50) NOT NULL UNIQUE,
+  room VARCHAR(50),
+  status equipment_status NOT NULL,
+  last_service_at DATE,
+  purchased_at DATE
+);
+
+CREATE INDEX idx_personal_training_member ON personal_training(member_id);
+CREATE INDEX idx_personal_training_trainer ON personal_training(trainer_id);
+CREATE INDEX idx_progress_fitness_goal ON progress(fitness_goal_id);
+CREATE INDEX idx_progress_fitness_goal ON progress(fitness_goal_id);
+CREATE INDEX idx_equipment_items_type ON equipment_items(type_id);
