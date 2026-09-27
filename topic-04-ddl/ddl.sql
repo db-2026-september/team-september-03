@@ -61,7 +61,5 @@ CREATE TABLE fitness_goals (
   goal_type goal_type NOT NULL, 
   target_value DECIMAL(10, 2) NOT NULL, 
   target_value_unit VARCHAR(20), 
-  start_date DATE NOT NULL, 
-  target_date DATE NOT NULL, 
-  achieved_date DATE 
-);
+
+  -- [Maksym Bielik] — equipment, personal training, and progress tracking
