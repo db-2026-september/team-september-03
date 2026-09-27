@@ -12,8 +12,7 @@ https://dbdiagram.io/d/team-3-6aa12ac6f476a8187a4b2427
 | ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------- | --------------------------- |
 | Anastasiia Khudych | Database Designer | Designed `members`, `memberships`, and `fitness_goals` tables and their relationships.               | ER diagram, database schema https://drive.google.com/file/d/1wsj2Gq09B0dvTyBCI5Mb53ThPKv0KvRm/view?usp=drive_link|
 | Микола Астаф'єв    | Database Designer | Designed `trainers`, `specializations`, and `trainer_specializations` tables and their relationships. | ER diagram, database schema |
-| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | ER diagram, database schema https://docs.google.com/document/d/1O4j7kMBXQoohZJdakoCuIcTW0ss-yurejr2xkkXEhZo/edit?tab=t.0
-https://drive.google.com/file/d/1RqNc4dHC378QTyYXURLHjjw6g64-8CFO/view?usp=sharing|
+| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | ER diagram, database schema https://docs.google.com/document/d/1O4j7kMBXQoohZJdakoCuIcTW0ss-yurejr2xkkXEhZo/edit?tab=t.0 https://drive.google.com/file/d/1RqNc4dHC378QTyYXURLHjjw6g64-8CFO/view?usp=sharing|
 | Vladyslav Kurchyk  | Database Designer | Designed `classes` and `attendance` tables and their relationships.                                   | ER diagram, database schema |
 
 ## Контекст теми
