@@ -114,3 +114,26 @@ CREATE INDEX idx_personal_training_trainer ON personal_training(trainer_id);
 CREATE INDEX idx_progress_fitness_goal ON progress(fitness_goal_id);
 CREATE INDEX idx_progress_fitness_goal ON progress(fitness_goal_id);
 CREATE INDEX idx_equipment_items_type ON equipment_items(type_id);
+
+
+-- [Kurchyk Vladyslav] - classes, attendance
+
+CREATE TABLE classes (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    trainer_id BIGINT NOT NULL,
+    room VARCHAR(50) NOT NULL,
+    scheduled_at TIMESTAMP NOT NULL,
+    duration_min INT NOT NULL,
+    max_capacity INT NOT NULL,
+    FOREIGN KEY (trainer_id) REFERENCES trainers (id)
+);
+
+CREATE TABLE attendance (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    class_id BIGINT NOT NULL,
+    attended_at DATE NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES members (id),
+    FOREIGN KEY (class_id) REFERENCES classes (id)
+);
