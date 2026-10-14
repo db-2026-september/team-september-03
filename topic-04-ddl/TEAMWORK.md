@@ -4,12 +4,12 @@
 - Команда: ...
 - Варіант предметної області: ...
 
-## Таблиця внесків
-| Учасник | Роль у команді | Що зроблено | Артефакти / файли |
-|---|---|---|---|
-| ... | ... | ... | ... |
-| ... | ... | ... | ... |
-| ... | ... | ... | ... |
+| Учасник            | Роль у команді    | Що зроблено                                                                                           | Артефакти / файли           |
+| ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------- | --------------------------- |
+| Anastasiia Khudych | Database Designer | Designed `members`, `memberships`, and `fitness_goals` tables and their relationships.               | database schema |
+| Микола Астаф'єв    | Database Designer | Designed `trainers`, `specializations`, and `trainer_specializations` tables and their relationships. | database schema |
+| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | database schema |
+| Vladyslav Kurchyk  | Database Designer | Designed `classes` and `attendance` tables and their relationships.                                   | database schema |
 
 ## Контекст теми
 Опишіть, хто відповідав за: створення таблиць, PK/FK, constraints, indexes, порядок секцій у `ddl.sql` та перевірку виконання скрипта у PostgreSQL.
