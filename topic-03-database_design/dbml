@@ -1,50 +1,22 @@
-// ╔══════════════════════════════════════════════════════════════════╗
+// ╔═══════════════════════════════════════════════════════════════
 // ║                     ER DIAGRAM — DBML                           ║
-// ╚══════════════════════════════════════════════════════════════════╝
+// ╚═══════════════════════════════════════════════════════════════
 //
-// 📌 ЩО ПОТРІБНО ЗРОБИТИ
-// ──────────────────────────────────────────────────────────────────
-//  1. Побудуйте ER-діаграму вашої бази даних у будь-якому зручному
-//     інструменті — dbdiagram.io, draw.io, Lucidchart тощо.
-//
-//  2. Додайте зображення вашої фінальної ER-діаграми (можна вставити як посилання на зображення в інтернеті та обов'язково закомітити файл з діаграмою в репозиторій).
-//  
-//  2. Кожен учасник команди підписує таблиці, які він створював:
-//
-//     [Микола] — trainers, specializations, trainerSpecializations
-//     [Anastasiia Khudych] — members, memberships, fitness_goals
-//     [Maksym Bielik] — equipment_types, equipment_items, progress, personal_training
-//     [Vladyslav Kurchyk] - classes, attendance
-//
-//  4. У цьому файлі додайте DBML-код вашої схеми.
-//     Якщо використовуєте dbdiagram.io — там є кнопка експорту в DBML.
-//     Якщо draw.io або інший інструмент — скопіюйте схему вручну.
-//
-// ──────────────────────────────────────────────────────────────────
-// 💡 ПІДКАЗКА
-//
-//  DBML виглядає ось так (це лише приклад — не копіюйте):
-//
-//  Table users {
-//    id       bigint [primary key, increment]
-//    username varchar(100) [not null]
-//  }
-//
-//  Ref: posts.user_id > users.id
-//
-//  Повна документація: https://dbml.dbdiagram.io/docs/
-// ══════════════════════════════════════════════════════════════════
+// Оновлено: враховано зауваження ментора щодо типів полів та зв'язків
+// - Узгоджено імена полів для імен (first_name/last_name)
+// - phone залишено як varchar(20) (щоб зберегти '+' та ведучі нулі)
+// - measurement -> decimal(6,2) для дробових вимірювань
+// - duration_min і max_capacity -> smallint
+// - Додано таблицю rooms та пов'язаність equipment_items і classes з rooms
+// - attendance.class_id зроблено nullable (щоб записувати прихід без групового заняття)
+// Link to our diagram:
+// https://dbdiagram.io/d/team-3-6aa12ac6f476a8187a4b2427
 
-
-// Вставте ваш DBML-код нижче 👇:
-//Link to our diagram:
-https://dbdiagram.io/d/team-3-6aa12ac6f476a8187a4b2427
-
- //Anastasiia Khudych
+//Anastasiia Khudych
 Table members {
   id bigint [primary key, increment]
-  name varchar(50) [not null]
-  surname varchar(50) [not null]
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
   phone varchar(20) [not null]
   email varchar(100) [not null, unique]
 }
@@ -131,22 +103,29 @@ Table equipment_types {
   weight_kg float
 }
 
+Table rooms {
+  id smallint [primary key, increment]
+  name varchar(50) [not null] // наприклад: "A101", "Studio 2"
+  location varchar(100)
+}
+
 Table equipment_items {
   id bigint [primary key, increment]
   type_id bigint [not null]
   inventory_number varchar(50) [not null, unique]
-  room varchar(50)
+  room_id smallint
   status equipment_status [not null, default: 'available']
   last_service_at date
   purchased_at date
 }
 
 Ref: equipment_items.type_id > equipment_types.id
+Ref: equipment_items.room_id > rooms.id
 
 Table progress {
   id bigint [primary key, increment]
   fitness_goal_id bigint [not null]
-  measurement integer [not null]
+  measurement decimal(6,2) [not null]
   recorded_at date [not null]
   notes text
 }
@@ -165,7 +144,7 @@ Table personal_training {
   member_id bigint [not null]
   trainer_id bigint [not null]
   scheduled_at timestamp [not null]
-  duration_min int [not null, default: 60]
+  duration_min smallint [not null, default: 60]
   status session_status [not null, default: 'scheduled']
   is_paid boolean [not null, default: false]
   notes text
@@ -180,20 +159,35 @@ Table classes {
   id bigint [primary key, increment]
   name varchar(100) [not null]
   trainer_id bigint [not null]
-  room varchar(50) [not null]
+  room_id smallint [not null]
   scheduled_at timestamp [not null]
-  duration_min int [not null]
-  max_capacity int [not null]
+  duration_min smallint [not null]
+  max_capacity smallint [not null]
 }
 
 Ref: classes.trainer_id > trainers.id
+Ref: classes.room_id > rooms.id
 
 Table attendance {
   id bigint [primary key, increment]
   member_id bigint [not null]
-  class_id bigint [not null]
+  class_id bigint // nullable: NULL means приход в зал без групового заняття
   attended_at timestamp [not null]
 }
 
 Ref: attendance.member_id > members.id
 Ref: attendance.class_id > classes.id
+
+// Зв'язок: які предмети обладнання використовуються на заняттях
+Table class_equipments {
+  class_id bigint [not null]
+  equipment_item_id bigint [not null]
+  quantity smallint [default: 1]
+
+  indexes {
+    (class_id, equipment_item_id) [pk]
+  }
+}
+
+Ref: class_equipments.class_id > classes.id
+Ref: class_equipments.equipment_item_id > equipment_items.id
