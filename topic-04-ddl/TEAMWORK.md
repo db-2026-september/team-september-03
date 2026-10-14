@@ -9,7 +9,7 @@
 | ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------- | --------------------------- |
 | Anastasiia Khudych | Database Designer | Designed `members`, `memberships`, and `fitness_goals` tables and their relationships.               | database schema |
 | Микола Астаф'єв    | Database Designer | Designed `trainers`, `specializations`, and `trainer_specializations` tables and their relationships. | database schema |
-| Maksym Bielik      | Database Designer | Designed `equipment_types`, `equipment_items`, `personal_training`, and `progress` tables.            | database schema |
+| Maksym Bielik      | Database Designer | Designed equipment_types, rooms, equipment_items, progress, personal_training, class_equipments            | database schema |
 | Vladyslav Kurchyk  | Database Designer | Designed `classes` and `attendance` tables and their relationships.                                   | database schema |
 
 ## Контекст теми
